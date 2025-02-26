@@ -8,14 +8,14 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 contract OnChainNFT is ERC721URIStorage, Ownable {
     uint256 private _tokenIdCounter;
 
-    // ✅ FIX: Pass msg.sender to Ownable constructor
+
     constructor() ERC721("BezNFT", "bez") Ownable(msg.sender) {}
 
     function mintNFT() public onlyOwner {
         _tokenIdCounter++;
         uint256 newItemId = _tokenIdCounter;
+
         
-        // Generate NFT metadata
         string memory svgImage = generateSVG();
         string memory json = string(
             abi.encodePacked(
