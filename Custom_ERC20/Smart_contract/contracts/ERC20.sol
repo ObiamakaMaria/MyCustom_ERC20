@@ -36,7 +36,7 @@ contract ERC20 {
         totalsupply = _totalSupply;
         owner = msg.sender;
 
-        mint(owner, totalsupply * (10 ** uint256(tokenDecimals)));
+        
     }
 
     function name() public view returns (string memory) {
@@ -56,49 +56,38 @@ contract ERC20 {
     }
 
     function balanceOf(address _owner) public view returns (uint256 balance) {
-        if (_owner == address(0)){
-            revert addressZero();
-        }
-
+        if (_owner == address(0)) revert addressZero();
+        
         balance = balances[_owner];
     }
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
-        if (_to == address(0)){
-            revert addressZero();
-        }
+        if (_to == address(0)) revert addressZero();
+        
 
-        if (balances[msg.sender] < _value ) {
-            revert InsufficientBalance();
-        }
+        if (balances[msg.sender] < _value ) revert InsufficientBalance();
+        
 
         balances[msg.sender] -= _value;
         balances[_to] += _value;
-        success = true;
+        
         emit Transfer(msg.sender, _to, _value);
+        success = true;
     }
 
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
 
-        if (msg.sender == address(0)){
-            revert addressZero();
-        }
-        if (_from == address(0)){
-            revert addressZero();
-        }
+        if (msg.sender == address(0)) revert addressZero();
+        
+        if (_from == address(0)) revert addressZero();
+    
 
-        if (_to == address(0)){
-            revert addressZero();
-        }
+        if (_to == address(0)) revert addressZero();
 
-        if (balances[_from] < _value) {
-            revert InsufficientBalance();
-        }
-        if (allowances[_from][msg.sender] < _value) {
-            revert InsufficientBalance();
-        }
-
-
+        if (balances[_from] < _value) revert InsufficientBalance();
+        
+        if (allowances[_from][msg.sender] < _value) revert InsufficientBalance();
+        
         balances[_from] -= _value;
         allowances[_from][msg.sender] += _value;
         balances[_to] -=_value;
@@ -110,17 +99,14 @@ contract ERC20 {
 
     function approve(address _spender, uint256 _value) public returns (bool success) {
 
-        if (msg.sender == address(0)){
-            revert addressZero();
-        }
+        if (msg.sender == address(0)) revert addressZero();
+        
 
-        if (_spender == address(0)){
-            revert addressZero();
-        }
+        if (_spender == address(0)) revert addressZero();
+        
 
-        if (balances[msg.sender] < _value) {
-            revert InsufficientBalance();
-        }
+        if (balances[msg.sender] < _value) revert InsufficientBalance();
+        
 
         allowances[msg.sender][_spender] = _value;
         
@@ -130,24 +116,18 @@ contract ERC20 {
     }
 
     function allowance(address _owner, address _spender) public view OnlyOwner returns (uint256 remaining) {
-        if (_owner == address(0)){
-            revert addressZero();
-        }
+        if (_owner == address(0)) revert addressZero();
+        
 
-        if (_spender == address(0)){
-            revert addressZero();
-        }
-
+        if (_spender == address(0)) revert addressZero();
+        
         remaining = allowances[_owner][_spender];      
     }
 
     function mint(address _to, uint256 _value) public OnlyOwner  returns (bool success) {
-         if (_to == address(0)) {
-            revert addressZero();
-        }
-        if (_value <= 0) {
-            revert InvalidAmount();
-        }
+         if (_to == address(0)) revert addressZero();
+        if (_value <= 0) revert InvalidAmount();
+        
 
         totalsupply += _value;
         balances[_to] += _value; 
