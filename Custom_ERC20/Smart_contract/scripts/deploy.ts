@@ -2,22 +2,20 @@ import { ethers } from "hardhat";
 
 
 async function main() {
-    
-    const AmaksNFT = await ethers.getContractFactory("AmaksNFT");
-    const Amaks_NFT = await AmaksNFT.deploy();
-    await Amaks_NFT.waitForDeployment();
+    const signer = await ethers.provider.getSigner();
 
-    console.log("AmaksNFT Deployed to  to:", await Amaks_NFT.getAddress());
+    console.log(" AMAKSNFT Contract Deployer's Address: ", signer.address)
 
-   
-    
+    const amaks_token = await ethers.deployContract("AMAKSNFT", ["AMAKS_TOKEN", "AMAKS"])
+    await amaks_token.waitForDeployment()
+
+    console.log(" AMAKSNFT Contract Deployed ")
+    console.log("Contract Address: ", amaks_token.target)
+
+
 }
 
-main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error);
-        process.exit(1);
-    }); 
-
-    
+main().catch((error) => {
+    console.error(error)
+    process.exit(1)
+})
