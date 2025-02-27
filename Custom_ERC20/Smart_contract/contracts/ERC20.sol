@@ -90,7 +90,7 @@ contract ERC20 {
         
         balances[_from] -= _value;
         allowances[_from][msg.sender] += _value;
-        balances[_to] -=_value;
+        balances[_to] +=_value;
 
         emit Transfer(_from, _to, _value);
         success = true;
