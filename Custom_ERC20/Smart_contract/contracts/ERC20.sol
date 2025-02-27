@@ -85,8 +85,7 @@ contract ERC20 {
         if (_to == address(0)) revert addressZero();
 
         if (balances[_from] < _value) revert InsufficientBalance();
-        
-        if (allowances[_from][msg.sender] < _value) revert InsufficientBalance();
+       
         
         balances[_from] -= _value;
         allowances[_from][msg.sender] += _value;
