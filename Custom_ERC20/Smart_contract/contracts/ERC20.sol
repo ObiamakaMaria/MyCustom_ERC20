@@ -102,8 +102,10 @@ contract ERC20 {
         balances[_from] -= _value;
         allowances[_from][msg.sender] += _value;
         balances[_to] -=_value;
-        success = true;
+
         emit Transfer(_from, _to, _value);
+        success = true;
+        
     }
 
     function approve(address _spender, uint256 _value) public returns (bool success) {
@@ -121,8 +123,9 @@ contract ERC20 {
         }
 
         allowances[msg.sender][_spender] = _value;
-        success = true;
+        
         emit Approval(msg.sender, _spender, _value);
+        success = true;
 
     }
 
