@@ -16,15 +16,14 @@ contract ERC20 {
     error InsufficientBalance();
     error ownerOnly();
     error InvalidAmount();
+    error Noallowance();
 
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     modifier OnlyOwner() {
-        if(msg.sender!= owner ) {
-            revert ownerOnly();
-        }
+        if(msg.sender!= owner ) revert ownerOnly();
         _;
     }
 
@@ -63,8 +62,7 @@ contract ERC20 {
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
         if (_to == address(0)) revert addressZero();
-        
-
+        if (_value == 0) revert InvalidAmount();
         if (balances[msg.sender] < _value ) revert InsufficientBalance();
         
 
@@ -78,12 +76,9 @@ contract ERC20 {
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
 
         if (msg.sender == address(0)) revert addressZero();
-        
         if (_from == address(0)) revert addressZero();
-    
-
         if (_to == address(0)) revert addressZero();
-
+        if (allowances[_from][msg.sender] >= _value) revert Noallowance();
         if (balances[_from] < _value) revert InsufficientBalance();
        
         
@@ -96,14 +91,10 @@ contract ERC20 {
         
     }
 
-    function approve(address _spender, uint256 _value) public returns (bool success) {
+    function approve(address _spender, uint256 _value)  OnlyOwner public returns (bool success) {
 
         if (msg.sender == address(0)) revert addressZero();
-        
-
         if (_spender == address(0)) revert addressZero();
-        
-
         if (balances[msg.sender] < _value) revert InsufficientBalance();
         
 
